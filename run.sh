@@ -29,5 +29,6 @@ run_shared+=(-cluster "$cluster_name")
 run_shared+=(-monitor_parent_process $$)
 run_shared+=(-shard)
 cp "$dontstarve_dir/$cluster_name/dedicated_server_mods_setup.lua" "$install_dir/mods"
+cp "$dontstarve_dir/$cluster_name/cluster_token.txt" "$HOME/.klei/DoNotStarveTogether/&cluster_name"
 "${run_shared[@]}" Caves  | sed 's/^/Caves:  /' &
 "${run_shared[@]}" Master | sed 's/^/Master: /'
