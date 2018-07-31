@@ -14,13 +14,16 @@ function check_for_file()
             fail "Missing file: $1"
     fi
 }
+cp "$dontstarve_dir/$cluster_name/cluster_token.txt" "$HOME/.klei/DoNotStarveTogether/&cluster_name"
 cd "$steamcmd_dir" || fail "Missing $steamcmd_dir directory!"
 check_for_file "steamcmd.sh"
 check_for_file "$dontstarve_dir/$cluster_name/cluster.ini"
 check_for_file "$dontstarve_dir/$cluster_name/cluster_token.txt"
 check_for_file "$dontstarve_dir/$cluster_name/Master/server.ini"
-check_for_file "$dontstarve_dir/$cluster_name/Caves/server.ini"
+# check_for_file "$dontstarve_dir/$cluster_name/Caves/server.ini"
 ./steamcmd.sh +force_install_dir "$install_dir" +login anonymous +app_update 343050 +quit
+
+cp "$dontstarve_dir/$cluster_name/dedicated_server_mods_setup.lua" "$install_dir/mods"
 check_for_file "$install_dir/bin"
 cd "$install_dir/bin" || fail
 run_shared=(./dontstarve_dedicated_server_nullrenderer)
@@ -28,7 +31,5 @@ run_shared+=(-console)
 run_shared+=(-cluster "$cluster_name")
 run_shared+=(-monitor_parent_process $$)
 run_shared+=(-shard)
-cp "$dontstarve_dir/$cluster_name/dedicated_server_mods_setup.lua" "$install_dir/mods"
-cp "$dontstarve_dir/$cluster_name/cluster_token.txt" "$HOME/.klei/DoNotStarveTogether/&cluster_name"
-"${run_shared[@]}" Caves  | sed 's/^/Caves:  /' &
+# "${run_shared[@]}" Caves  | sed 's/^/Caves:  /' &
 "${run_shared[@]}" Master | sed 's/^/Master: /'
